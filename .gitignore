@@ -7,6 +7,9 @@ data/processed/*
 !data/interim/.gitkeep
 !data/processed/.gitkeep
 
+# DuckDB spill folders, wherever they appear
+.tmp/
+
 # Python
 __pycache__/
 *.py[cod]

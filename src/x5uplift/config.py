@@ -20,7 +20,6 @@ ID_COL = "client_id"
 TREATMENT_COL = "treatment_flg"
 TARGET_COL = "target"
 
-
 # Decision moment: the last timestamp in the purchase history (checked in notebook 01).
 # Any model input must be known at or before this moment.
 CUTOFF = "2019-03-18 23:40:03"
@@ -46,6 +45,9 @@ FEATURE_GROUPS_PATH = REPORTS / "feature_groups.json"
 # Client segments (decided in notebook 02): k-means with k = 7, saved per client.
 N_SEGMENTS = 7
 SEGMENTS_PATH = DATA_PROCESSED / "segments.parquet"
+
+# Purchase probability without an SMS (notebook 03), used by the policies in notebook 06.
+PROPENSITY_PATH = DATA_PROCESSED / "propensity.parquet"
 
 # Documented treatment share (scikit-uplift page: "Treatment ratio 0.5"). This is a design
 # assumption used for the sample ratio mismatch test, not a measured fact.
