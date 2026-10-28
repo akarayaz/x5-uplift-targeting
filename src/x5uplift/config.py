@@ -84,3 +84,9 @@ def set_seed(seed: int = SEED) -> None:
     """Seed python and numpy. Models and splits should also receive the seed explicitly."""
     random.seed(seed)
     np.random.seed(seed)
+# Out-of-fold uplift scores of the training folds (notebook 05), saved so slow models run only once.
+UPLIFT_SCORES_PATH = DATA_PROCESSED / "uplift_scores.parquet"
+
+# Predicted uplift of the chosen model (notebook 05) for all experiment clients: out of fold for the
+# training folds, from one model fitted on all training folds for the test set. Used in notebook 06.
+UPLIFT_PATH = DATA_PROCESSED / "uplift.parquet"

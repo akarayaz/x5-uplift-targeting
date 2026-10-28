@@ -28,7 +28,12 @@ NEUTRAL_FILL = "#e9e8e3"
 
 
 def set_style() -> None:
-    """Apply the project style to all matplotlib figures created afterwards."""
+    """Apply the project style to all matplotlib figures created afterwards.
+
+    Starts from matplotlib's defaults, so a style set by another library (causalml switches to
+    "fivethirtyeight" on import) does not leak into the project figures.
+    """
+    plt.style.use("default")
     mpl.rcParams.update(
         {
             "figure.facecolor": SURFACE,
@@ -36,6 +41,7 @@ def set_style() -> None:
             "savefig.facecolor": SURFACE,
             "font.family": "sans-serif",
             "font.sans-serif": ["Arial", "Helvetica", "DejaVu Sans"],
+            "font.size": 10,
             "text.color": INK,
             "axes.labelcolor": INK_2,
             "axes.labelsize": 10,
