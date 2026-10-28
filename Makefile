@@ -1,6 +1,6 @@
 PY ?= python
 
-.PHONY: download convert audit all test freeze
+.PHONY: download convert audit features all test freeze
 
 download:
 	$(PY) scripts/01_download_data.py
@@ -11,8 +11,11 @@ convert:
 audit:
 	$(PY) scripts/03_inspect_data.py
 
+features:
+    $(PY) scripts/04_build_features.py
+
 # Data stage only for now. Notebook execution is added once the notebooks exist.
-all: download convert audit
+all: download convert audit features
 
 test:
 	$(PY) -m pytest -q

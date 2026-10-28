@@ -43,6 +43,10 @@ N_TOP_CATEGORIES = 12
 CATEGORY_MAP_PATH = DATA_PROCESSED / "category_map.csv"
 FEATURE_GROUPS_PATH = REPORTS / "feature_groups.json"
 
+# Client segments (decided in notebook 02): k-means with k = 7, saved per client.
+N_SEGMENTS = 7
+SEGMENTS_PATH = DATA_PROCESSED / "segments.parquet"
+
 # Documented treatment share (scikit-uplift page: "Treatment ratio 0.5"). This is a design
 # assumption used for the sample ratio mismatch test, not a measured fact.
 EXPECTED_TREATMENT_SHARE = 0.5
