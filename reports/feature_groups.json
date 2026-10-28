@@ -1,0 +1,68 @@
+{
+  "demographics": [
+    "age",
+    "age_missing",
+    "gender",
+    "days_since_card_issue",
+    "redeemed_before_cutoff",
+    "days_since_first_redeem",
+    "days_issue_to_redeem"
+  ],
+  "rfm_trend": [
+    "n_baskets",
+    "total_spend",
+    "avg_basket_spend",
+    "max_basket_spend",
+    "std_basket_spend",
+    "days_since_last_purchase",
+    "days_since_first_purchase",
+    "n_baskets_recent",
+    "n_baskets_previous",
+    "spend_recent",
+    "spend_previous",
+    "mean_gap_days",
+    "std_gap_days",
+    "overdue_ratio",
+    "share_spend_recent",
+    "basket_trend"
+  ],
+  "points": [
+    "reg_points_received",
+    "reg_points_spent",
+    "exp_points_received",
+    "exp_points_spent",
+    "share_baskets_points_spent",
+    "share_baskets_express_received"
+  ],
+  "basket_content": [
+    "avg_items_per_basket",
+    "n_distinct_products",
+    "share_products_repeated"
+  ],
+  "stores": [
+    "n_distinct_stores",
+    "top_store_share"
+  ],
+  "time_habits": [
+    "share_weekend_baskets",
+    "share_evening_baskets"
+  ],
+  "categories": [
+    "share_cat_01",
+    "share_cat_02",
+    "share_cat_03",
+    "share_cat_04",
+    "share_cat_05",
+    "share_cat_06",
+    "share_cat_07",
+    "share_cat_08",
+    "share_cat_09",
+    "share_cat_10",
+    "share_cat_11",
+    "share_cat_12",
+    "share_cat_other",
+    "share_own_brand",
+    "share_alcohol",
+    "n_distinct_categories"
+  ]
+}
