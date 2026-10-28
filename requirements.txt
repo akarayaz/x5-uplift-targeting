@@ -1,0 +1,10 @@
+# Lower bounds only for now. Exact versions are frozen into requirements.lock
+# after the first successful install (run: make freeze) and that file is committed.
+duckdb>=1.0
+pandas>=2.0
+numpy>=1.26
+scipy>=1.11
+pyarrow>=14
+matplotlib>=3.8
+jupyterlab>=4.0
+pytest>=8.0

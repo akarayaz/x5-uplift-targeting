@@ -1,0 +1,21 @@
+# Raw and intermediate data never go into the repository (license not verified yet).
+# This also covers the DuckDB spill directory data/interim/.duckdb_tmp.
+data/raw/*
+data/interim/*
+data/processed/*
+!data/raw/.gitkeep
+!data/interim/.gitkeep
+!data/processed/.gitkeep
+
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+.ipynb_checkpoints/
+.pytest_cache/
+
+# OS and editor files
+.DS_Store
+.idea/
+.vscode/
