@@ -20,9 +20,27 @@ ID_COL = "client_id"
 TREATMENT_COL = "treatment_flg"
 TARGET_COL = "target"
 
+
+# Decision moment: the last timestamp in the purchase history (checked in notebook 01).
+# Any model input must be known at or before this moment.
+CUTOFF = "2019-03-18 23:40:03"
+
+# Valid age range (decided in notebook 01). Values outside it are treated as missing.
+AGE_MIN = 14
+AGE_MAX = 100
+
+# Labeled data split (decided in notebook 01): untouched test share and cross-fitting folds.
+TEST_SHARE = 0.30
+N_FOLDS = 5
+SPLITS_PATH = DATA_PROCESSED / "splits.parquet"
+
 # Documented treatment share (scikit-uplift page: "Treatment ratio 0.5"). This is a design
 # assumption used for the sample ratio mismatch test, not a measured fact.
 EXPECTED_TREATMENT_SHARE = 0.5
+
+# products.csv is not in the scikit-uplift files. It comes from the official competition
+# archive (ods.ai, retailhero-uplift.zip, data/products.csv), extracted by hand into data/raw.
+PRODUCTS_CSV = DATA_RAW / "products.csv"
 
 # Source: scikit-uplift 0.5.1, sklift.datasets.datasets (x5_metadata), read via its
 # documentation page. The MD5 values were transcribed from that page. If all three show a

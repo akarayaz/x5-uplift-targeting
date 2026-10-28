@@ -1,0 +1,355 @@
+{
+  "duckdb_version": "1.5.6",
+  "profiles": {
+    "clients": {
+      "rows": 400162,
+      "columns": [
+        {
+          "name": "client_id",
+          "type": "VARCHAR",
+          "kind": "other",
+          "nulls": 0,
+          "null_share": 0.0,
+          "distinct": 400162,
+          "distinct_is_approximate": false
+        },
+        {
+          "name": "first_issue_date",
+          "type": "TIMESTAMP",
+          "kind": "temporal",
+          "nulls": 0,
+          "null_share": 0.0,
+          "distinct": 396725,
+          "distinct_is_approximate": false,
+          "min": "2017-04-04T18:24:18",
+          "max": "2019-03-15T21:50:56"
+        },
+        {
+          "name": "first_redeem_date",
+          "type": "TIMESTAMP",
+          "kind": "temporal",
+          "nulls": 35469,
+          "null_share": 0.08863660217611867,
+          "distinct": 362527,
+          "distinct_is_approximate": false,
+          "min": "2017-04-11T09:42:20",
+          "max": "2019-11-20T01:14:10"
+        },
+        {
+          "name": "age",
+          "type": "BIGINT",
+          "kind": "numeric",
+          "nulls": 0,
+          "null_share": 0.0,
+          "distinct": 290,
+          "distinct_is_approximate": false,
+          "min": -7491,
+          "max": 1901,
+          "mean": 46.48811231451262,
+          "std": 43.87121818062955
+        },
+        {
+          "name": "gender",
+          "type": "VARCHAR",
+          "kind": "other",
+          "nulls": 0,
+          "null_share": 0.0,
+          "distinct": 3,
+          "distinct_is_approximate": false,
+          "timestamp_parse_share_in_sample": 0.0
+        }
+      ]
+    },
+    "train": {
+      "rows": 200039,
+      "columns": [
+        {
+          "name": "client_id",
+          "type": "VARCHAR",
+          "kind": "other",
+          "nulls": 0,
+          "null_share": 0.0,
+          "distinct": 200039,
+          "distinct_is_approximate": false
+        },
+        {
+          "name": "treatment_flg",
+          "type": "BIGINT",
+          "kind": "numeric",
+          "nulls": 0,
+          "null_share": 0.0,
+          "distinct": 2,
+          "distinct_is_approximate": false,
+          "min": 0,
+          "max": 1,
+          "mean": 0.4998075375301816,
+          "std": 0.5000012127190869
+        },
+        {
+          "name": "target",
+          "type": "BIGINT",
+          "kind": "numeric",
+          "nulls": 0,
+          "null_share": 0.0,
+          "distinct": 2,
+          "distinct_is_approximate": false,
+          "min": 0,
+          "max": 1,
+          "mean": 0.6198891216212838,
+          "std": 0.4854150558296109
+        }
+      ]
+    },
+    "purchases": {
+      "rows": 45786568,
+      "columns": [
+        {
+          "name": "client_id",
+          "type": "VARCHAR",
+          "kind": "other",
+          "nulls": 0,
+          "null_share": 0.0,
+          "distinct": 468992,
+          "distinct_is_approximate": true
+        },
+        {
+          "name": "transaction_id",
+          "type": "VARCHAR",
+          "kind": "other",
+          "nulls": 0,
+          "null_share": 0.0,
+          "distinct": 8648427,
+          "distinct_is_approximate": true,
+          "timestamp_parse_share_in_sample": 0.0
+        },
+        {
+          "name": "transaction_datetime",
+          "type": "TIMESTAMP",
+          "kind": "temporal",
+          "nulls": 0,
+          "null_share": 0.0,
+          "distinct": 4374779,
+          "distinct_is_approximate": true,
+          "min": "2018-11-21T21:02:33",
+          "max": "2019-03-18T23:40:03"
+        },
+        {
+          "name": "regular_points_received",
+          "type": "DOUBLE",
+          "kind": "numeric",
+          "nulls": 0,
+          "null_share": 0.0,
+          "distinct": 2368,
+          "distinct_is_approximate": true,
+          "min": 0.0,
+          "max": 2399.0,
+          "mean": 8.049876136172317,
+          "std": 12.685027816164643
+        },
+        {
+          "name": "express_points_received",
+          "type": "DOUBLE",
+          "kind": "numeric",
+          "nulls": 0,
+          "null_share": 0.0,
+          "distinct": 12,
+          "distinct_is_approximate": true,
+          "min": 0.0,
+          "max": 300.0,
+          "mean": 0.060840987251981844,
+          "std": 2.4262256145899466
+        },
+        {
+          "name": "regular_points_spent",
+          "type": "DOUBLE",
+          "kind": "numeric",
+          "nulls": 0,
+          "null_share": 0.0,
+          "distinct": 1081,
+          "distinct_is_approximate": true,
+          "min": -5066.0,
+          "max": 0.0,
+          "mean": -5.31262550624017,
+          "std": 36.03646282908275
+        },
+        {
+          "name": "express_points_spent",
+          "type": "DOUBLE",
+          "kind": "numeric",
+          "nulls": 0,
+          "null_share": 0.0,
+          "distinct": 75,
+          "distinct_is_approximate": true,
+          "min": -300.0,
+          "max": 0.0,
+          "mean": -0.3181049298126036,
+          "std": 3.287976134224996
+        },
+        {
+          "name": "purchase_sum",
+          "type": "DOUBLE",
+          "kind": "numeric",
+          "nulls": 0,
+          "null_share": 0.0,
+          "distinct": 259022,
+          "distinct_is_approximate": true,
+          "min": 0.0,
+          "max": 35149.04,
+          "mean": 777.5214770150094,
+          "std": 796.535010241567
+        },
+        {
+          "name": "store_id",
+          "type": "VARCHAR",
+          "kind": "other",
+          "nulls": 0,
+          "null_share": 0.0,
+          "distinct": 13496,
+          "distinct_is_approximate": true,
+          "timestamp_parse_share_in_sample": 0.0
+        },
+        {
+          "name": "product_id",
+          "type": "VARCHAR",
+          "kind": "other",
+          "nulls": 0,
+          "null_share": 0.0,
+          "distinct": 46970,
+          "distinct_is_approximate": true,
+          "timestamp_parse_share_in_sample": 0.0
+        },
+        {
+          "name": "product_quantity",
+          "type": "DOUBLE",
+          "kind": "numeric",
+          "nulls": 0,
+          "null_share": 0.0,
+          "distinct": 195,
+          "distinct_is_approximate": true,
+          "min": 0.0,
+          "max": 14941.0,
+          "mean": 1.2472445412375088,
+          "std": 3.1375842954322732
+        },
+        {
+          "name": "trn_sum_from_iss",
+          "type": "DOUBLE",
+          "kind": "numeric",
+          "nulls": 0,
+          "null_share": 0.0,
+          "distinct": 3909,
+          "distinct_is_approximate": true,
+          "min": 0.0,
+          "max": 35149.0,
+          "mean": 73.4883524792686,
+          "std": 87.53976657603472
+        },
+        {
+          "name": "trn_sum_from_red",
+          "type": "DOUBLE",
+          "kind": "numeric",
+          "nulls": 42743212,
+          "null_share": 0.9335316855371208,
+          "distinct": 1672,
+          "distinct_is_approximate": true,
+          "min": 0.0,
+          "max": 8789.0,
+          "mean": 76.77407309562207,
+          "std": 84.27114135282436
+        }
+      ]
+    }
+  },
+  "id_consistency": {
+    "id_col": "client_id",
+    "id_present": {
+      "clients": true,
+      "train": true,
+      "purchases": true
+    },
+    "clients_rows": 400162,
+    "clients_distinct_ids": 400162,
+    "clients_null_ids": 0,
+    "clients_duplicate_rows": 0,
+    "train_rows": 200039,
+    "train_distinct_ids": 200039,
+    "train_null_ids": 0,
+    "train_duplicate_rows": 0,
+    "train_ids_missing_in_clients": 0,
+    "purchases_distinct_ids": 400162,
+    "purchase_ids_missing_in_clients": 0,
+    "clients_without_purchases": 0,
+    "train_clients_without_purchases": 0
+  },
+  "experiment": {
+    "treatment_type": "BIGINT",
+    "target_type": "BIGINT",
+    "treatment_value_counts": {
+      "0": 100058,
+      "1": 99981
+    },
+    "target_value_counts_first_20": {
+      "0": 76037,
+      "1": 124002
+    },
+    "control_n": 100058,
+    "treatment_n": 99981,
+    "treatment_share": 0.4998075375301816,
+    "expected_treatment_share": 0.5,
+    "srm_chi2": 0.029639220352031353,
+    "srm_p_value": 0.8633113903439603,
+    "target_nulls_control": 0,
+    "target_nulls_treatment": 0,
+    "target_mean_control": 0.6032800975434248,
+    "target_mean_treatment": 0.6365109370780448,
+    "target_mean_overall": 0.6198891216212838
+  },
+  "balance": {
+    "numeric": [
+      {
+        "column": "first_issue_date",
+        "mean_control": 1515566908.5011992,
+        "mean_treatment": 1515416463.3771217,
+        "smd": -0.00855047548813977,
+        "nonnull_share_control": 1.0,
+        "nonnull_share_treatment": 1.0
+      },
+      {
+        "column": "first_redeem_date",
+        "mean_control": 1530018935.2801208,
+        "mean_treatment": 1529988346.798379,
+        "smd": -0.0016173740485056877,
+        "nonnull_share_control": 0.9089727957784485,
+        "nonnull_share_treatment": 0.9156039647533031
+      },
+      {
+        "column": "age",
+        "mean_control": 46.30387375322313,
+        "mean_treatment": 46.530870865464436,
+        "smd": 0.0045831041022316435,
+        "nonnull_share_control": 1.0,
+        "nonnull_share_treatment": 1.0
+      },
+      {
+        "column": "purchase_rows",
+        "mean_control": 114.04281516720302,
+        "mean_treatment": 114.73974055070464,
+        "smd": 0.0067340935406263605,
+        "nonnull_share_control": 1.0,
+        "nonnull_share_treatment": 1.0
+      }
+    ],
+    "categorical": [
+      {
+        "column": "gender",
+        "levels": 3,
+        "chi2": 0.5140341372004934,
+        "dof": 2,
+        "p_value": 0.7733550135652196
+      }
+    ],
+    "skipped_columns": [],
+    "max_abs_smd": 0.00855047548813977,
+    "n_above_flag": 0
+  }
+}
