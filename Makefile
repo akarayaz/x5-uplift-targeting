@@ -14,6 +14,9 @@ audit:
 features:
     $(PY) scripts/04_build_features.py
 
+criteo:
+	$(PY) scripts/05_sample_criteo.py
+	
 # Data stage only for now. Notebook execution is added once the notebooks exist.
 all: download convert audit features
 

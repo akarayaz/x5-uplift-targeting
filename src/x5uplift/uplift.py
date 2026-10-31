@@ -1,4 +1,4 @@
-"""Uplift models and their evaluation (notebooks 05 and 06).
+"""Uplift models and their evaluation (notebooks 05 to 07).
 
 The uplift of a client is P(buy | SMS) minus P(buy | no SMS). It is never observed for one client,
 because each client either got the SMS or not, so models estimate it from both groups. Every
@@ -57,11 +57,13 @@ class TLearner:
 
 class XLearner:
     """X-learner (Kuenzel et al., 2019). Stage 1 is a T-learner. Stage 2 models each client's
-    imputed effect (own outcome minus the other group's prediction) and averages the two models
-    with weight 0.5, the known share of SMS clients."""
+    imputed effect (own outcome minus the other group's prediction) and combines the two models
+    with the known share of treated clients e: uplift = e * tau0 + (1 - e) * tau1. In the X5
+    experiment e = 0.5, so the two models are simply averaged."""
 
-    def __init__(self, seed: int = SEED):
+    def __init__(self, seed: int = SEED, treatment_share: float = 0.5):
         self.seed = seed
+        self.e = treatment_share
 
     def fit(self, X, t, y):
         sms, ctl = t == 1, t == 0
@@ -74,19 +76,23 @@ class XLearner:
         return self
 
     def predict(self, X):
-        return 0.5 * (self.tau0.predict(X) + self.tau1.predict(X))
+        return self.e * self.tau0.predict(X) + (1 - self.e) * self.tau1.predict(X)
 
 
 class ClassTransformation:
     """Class transformation (Jaskowski and Jaroszewicz, 2012). The new label z is 1 for SMS buyers
     and control non-buyers. With half of the clients in each group, uplift = 2 P(z = 1) - 1, so a
-    single classifier targets the uplift directly."""
+    single classifier targets the uplift directly. If the treated share e is not 0.5, clients are
+    reweighted (0.5 / e and 0.5 / (1 - e)) so that both groups count equally; with e = 0.5 all
+    weights are 1."""
 
-    def __init__(self, seed: int = SEED):
+    def __init__(self, seed: int = SEED, treatment_share: float = 0.5):
         self.seed = seed
+        self.e = treatment_share
 
     def fit(self, X, t, y):
-        self.model = classifier(self.seed).fit(X, (y == t).astype(int))
+        weight = np.where(t == 1, 0.5 / self.e, 0.5 / (1 - self.e))
+        self.model = classifier(self.seed).fit(X, (y == t).astype(int), sample_weight=weight)
         return self
 
     def predict(self, X):

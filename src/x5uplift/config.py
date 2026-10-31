@@ -93,3 +93,10 @@ UPLIFT_PATH = DATA_PROCESSED / "uplift.parquet"
 
 # Aggregated outputs of notebook 06 read by the Streamlit demo (no client level data; safe to publish).
 DEMO_DATA_DIR = ROOT / "app" / "data"
+
+# Second randomized dataset (notebook 07): Criteo uplift v2.1, Criteo AI Lab, mirrored on Hugging Face
+# (datasets/criteo/criteo-uplift), license CC BY-NC-SA 4.0. Raw file stays local; a 10% sample is used.
+CRITEO_URL = "https://huggingface.co/datasets/criteo/criteo-uplift/resolve/main/criteo-research-uplift-v2.1.csv.gz"
+CRITEO_RAW = DATA_RAW / "criteo-research-uplift-v2.1.csv.gz"
+CRITEO_SAMPLE_PATH = DATA_PROCESSED / "criteo_sample.parquet"
+CRITEO_SAMPLE_SHARE = 0.10
