@@ -14,3 +14,4 @@ causalml>=0.15
 # numba 0.62 is the last release with wheels for Intel macOS (newer versions fail to build there)
 numba==0.62.*
 llvmlite==0.45.*
+streamlit>=1.30
