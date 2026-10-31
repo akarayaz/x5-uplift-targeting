@@ -90,3 +90,6 @@ UPLIFT_SCORES_PATH = DATA_PROCESSED / "uplift_scores.parquet"
 # Predicted uplift of the chosen model (notebook 05) for all experiment clients: out of fold for the
 # training folds, from one model fitted on all training folds for the test set. Used in notebook 06.
 UPLIFT_PATH = DATA_PROCESSED / "uplift.parquet"
+
+# Aggregated outputs of notebook 06 read by the Streamlit demo (no client level data; safe to publish).
+DEMO_DATA_DIR = ROOT / "app" / "data"
