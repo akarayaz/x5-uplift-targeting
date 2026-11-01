@@ -1,80 +1,98 @@
-# Who should we contact? Customer analysis, experiment analysis and uplift targeting
+# Whom should the SMS budget reach? Uplift targeting for a retail campaign
 
-**Status: work in progress. No results yet.** The main result and the main figure will be added after the decision notebook (Notebook 6) is finished.
+A grocery retailer sent an SMS to a random half of 200,000 customers and recorded who made a purchase. This project measures how much the message changed buying, finds which customers it actually moved, and turns that into a decision: whom to text for a given budget, and when texting pays at all. On customers the model never saw, texting the 10% it ranks highest brings about 75 extra buyers per 1,000 messages, against 33 when texting at random and 10 when texting the customers most likely to buy anyway.
 
-## Summary for readers without a technical background
-
-A retailer can send a promotion to only part of its customers, and contacting people costs money. This project uses a randomized pilot run by a large grocery retailer to estimate which customers actually change their behavior because of the contact, and compares that selection rule with simpler ones such as contacting everyone or contacting the customers most likely to buy anyway. Results will be reported as extra purchases and extra profit for each share of the budget, with the uncertainty shown and with cost and margin left as adjustable assumptions.
+![Extra purchases of each targeting policy above random targeting, by budget](figures/06_policy_gap.png)
 
 ## Business question
 
-Given a limited contact budget, which customers should be contacted so that the campaign creates the most additional purchases, and how much better is that than the simple alternatives?
+With a limited marketing budget, which customers should receive an SMS so that it creates the most additional purchases, and when does sending it pay for itself?
 
-## Main result
+## Main results
 
-Pending. It will appear here with a confidence interval, the assumptions behind it and one main figure (or a short demo recording).
+All effects come from the randomized experiment; intervals are 95%.
+
+| Question | Result |
+|---|---|
+| Does the SMS work? | It raises the purchase rate by **3.3 percentage points** [2.9, 3.8], 5.5% relative to the control group: about 33 extra purchasing customers per 1,000 messages. |
+| Does it work equally for everyone? | No. The effect falls by 0.53 points [0.38, 0.67] for every 10 points of purchase probability: about 5 points among customers unlikely to buy anyway, 1 point among those who almost always buy. |
+| Can a model find the customers it moves? | Yes. On the untouched test set (60,012 customers), contacting the top 10% by predicted uplift creates **75 extra purchases per 1,000 messages** [50, 100], against 33 at random and 10 for the likeliest buyers. Its advantage over random targeting is 41 [18, 66] at a 10% budget and stays above zero up to about 85%. |
+| Does targeting pay? | It depends on the cost of a message relative to the margin of an extra purchase. Below about 2%, texting almost everyone pays and targeting adds little. Around 3% to 5%, where texting everyone stops paying, targeting gains 2.6 to 6.6 margins per 1,000 customers. At 5%, texting everyone loses 16.8 margins per 1,000 customers while texting the top 9% by uplift earns 2.6 [0.3, 5.2]. |
+| What does the model rely on? | Shopping history and age. Shopping history alone gives about 80% of the model's ranking quality; store and time of day habits add nothing. |
+| Does it hold elsewhere? | On a second randomized experiment (Criteo online ads), the same methods again find the people the treatment moves, in the same order. There, unlike in X5, targeting the likeliest visitors also works, so the right policy depends on the campaign. |
+| How to confirm it? | A follow-up test that randomizes the SMS inside the targeted 10% and inside a random group needs about 9,000 customers per group (about 50,000 under a cautious assumption). |
+
+**Uplift** is the change in a customer's purchase probability caused by the SMS. It is never observed for one person, because each customer either got the message or not, so it is estimated from the randomized groups.
 
 ## Data
 
-The X5 RetailHero uplift dataset was shared by X5 Retail Group (a large Russian food retailer) for the RetailHero hackathon in winter 2019. The figures below come from the scikit-uplift documentation and are re-checked against the files by `scripts/03_inspect_data.py`.
+**X5 RetailHero** (X5 Retail Group, Russian grocery chain, 2019): 400,162 customers, 45.8 million purchase rows from before the campaign, a product table, and 200,039 customers in the SMS experiment with a treatment flag (50/50) and whether they bought during the campaign. The time window of that outcome is not documented. All customers in the experiment had their last purchase within 22 days before the campaign, so results describe recently active customers.
 
-* `clients.csv`: general information about 400,162 customers.
-* `purchases.csv`: 45,786,568 rows of purchase history before the communication.
-* `uplift_train.csv` (called `train.csv` in parts of the documentation): 200,039 customers with a treatment flag (`treatment_flg`) and a binary outcome (`target`). The documented treatment share is 0.5.
+**Criteo uplift v2.1** (Criteo AI Lab): randomized online advertising tests, used only to check the methods on a second dataset; a 10% sample (1.4 million users) is used.
 
-The documentation describes `target` as whether a purchase happened after the communication. It does not state the time window or what counts as a purchase. This is checked and documented in Notebook 1.
+Raw data is not stored in this repository. Only aggregated outputs (figures and the demo tables in `app/data`) are published.
 
-Raw data is not stored in this repository. The terms of use and redistribution rules have not been verified yet, so only derived and aggregated outputs are published.
+## Limitations
 
-## Method (planned)
+* One campaign of one Russian grocery chain in 2019, among recently active customers. Results are not claimed to carry over to other retailers, countries or messages.
+* The outcome is a yes or no purchase in an undocumented window. The data cannot tell whether the SMS created new purchases or moved planned ones earlier, or how much was spent; the value of an extra purchase is an assumption.
+* Cost and margin are not in the data. They are parameters, so no absolute profit is claimed.
+* The test set has 60,012 customers, so intervals at small budgets are wide; at a cost of 5% of the margin, the profit interval comes close to zero.
+* Individual customers cannot be labelled as "persuadable" or "sure thing"; such labels are only predicted tendencies.
 
-1. Data audit and randomization checks (group sizes, sample ratio mismatch, balance of pre contact features).
-2. Customer base analysis from pre contact history only: recency, frequency and monetary features, segments, concentration of value.
-3. Prediction of purchase probability and spend, with calibration.
-4. Experiment analysis: average effect with confidence intervals, variance reduction, A/A tests, power analysis, semi synthetic effect injection, subgroup analysis with multiple testing correction.
-5. Uplift modeling (the estimated change in purchase probability caused by contact), evaluated with Qini and AUUC curves, bootstrap intervals and several seeds.
-6. Decision layer: offline policy evaluation on the randomized data, comparing contacting everyone, contacting at random, contacting likely buyers and contacting customers with high estimated uplift. Contact cost and margin per purchase are parameters, with a sensitivity analysis.
-7. Ablation and error analysis by feature group and customer segment.
-8. A small Streamlit demo that reads precomputed results from step 6.
+## Repository structure
 
-Causal statements are made only inside the randomized experiment. Findings from purchase history alone are descriptive.
+```
+├── notebooks/
+│   ├── 01_data_audit.ipynb               checks every table, finds and removes a leak of post campaign dates, confirms the randomization
+│   ├── 02_customer_base.ipynb            builds 52 customer features, measures how concentrated value is, finds 7 stable segments
+│   ├── 03_prediction.ipynb               predicts who buys without an SMS (the "likely buyers" benchmark), with calibration
+│   ├── 04_ab_test_analysis.ipynb         measures the SMS effect with intervals, variance reduction, A/A tests, power and subgroups
+│   ├── 05_uplift_modelling.ipynb         compares five uplift methods (S, T and X learners, class transformation, uplift forest)
+│   ├── 06_targeting_decision.ipynb       compares four policies on the test set by extra purchases and profit, designs a follow-up test
+│   └── 07_ablation_and_validation.ipynb  tests which feature groups matter, where the ranking fails, and repeats the methods on Criteo
+├── src/x5uplift/        shared code: configuration, features, segments, experiment estimators, uplift models, policy evaluation, plotting
+├── scripts/             data pipeline: download, conversion to Parquet, inspection, feature table, Criteo sample
+├── app/
+│   ├── app.py           Streamlit demo
+│   └── data/            aggregated outputs of notebook 06 read by the demo (no customer level data)
+├── figures/             figures saved by the notebooks
+├── tests/               unit tests for the audit helpers
+├── Makefile             one command per pipeline step
+└── requirements.txt
+```
 
-## Known limitations
+Each notebook starts with a three sentence summary and one research question, and ends with what was learned, what remains open and the next step.
 
-* One company, one country, one season (2019), one campaign. The results are not claimed to generalize to other sectors or countries.
-* The exact meaning of `target` is to be confirmed (see above).
-* Only one communication moment exists, so effects over time and repeated experiments cannot be studied. The timestamp structure of the purchase history decides whether lifetime value and churn can be defined at all.
-* The data has no currency and no margin. Cost and margin are parameters, so no absolute profit claim is made.
-* Individual customers cannot be labeled as persuadable, sure thing, lost cause or sleeping dog. Such labels would only be estimated tendencies.
+## Run the demo
 
-## How to run
+The demo reads only the files in `app/data`, so it runs without the raw data.
 
 ```
 python -m venv .venv
-source .venv/bin/activate        # on Windows: .venv\Scripts\activate
-pip install -r requirements.txt
+source .venv/bin/activate          # Windows: .venv\Scripts\activate
+pip install streamlit pandas matplotlib    # the demo needs only these; requirements.txt has the full analysis stack
+streamlit run app/app.py                  # run from the repository root; opens http://localhost:8501
+```
+
+Set the share of customers to contact, the size of your customer base, the cost of one SMS and the margin of one extra purchase. The four policies, the suggested budget and the profile of the contacted customers update at once.
+
+## Reproduce the analysis
+
+```
 pip install -e .
-python -m pytest -q
-
-python scripts/01_download_data.py      # about 650 MB download into data/raw
-python scripts/02_convert_to_parquet.py # CSV to Parquet with DuckDB
-python scripts/03_inspect_data.py       # audit, writes reports/data_audit.json
+make download          # X5 files from the scikit-uplift mirror into data/raw (about 650 MB)
+                       # products.csv: download the competition archive from ods.ai and place data/products.csv in data/raw
+make convert           # CSV to Parquet with DuckDB
+make audit             # data checks
+make features          # client feature table (52 features, about 10 minutes on 8 GB of RAM)
+make criteo            # optional: Criteo 10% sample; download the raw file first (URL in src/x5uplift/config.py)
 ```
 
-On systems with `make`, `make all` runs the three data steps. The purchases table is never loaded into pandas as a whole. DuckDB and Parquet are used so that it is processed out of core.
+Then run the notebooks in order. Random seeds are fixed (`SEED = 42`). The uplift forest needs `causalml`; on Intel Macs, `numba` is pinned to 0.62 and OpenMP (`libomp`) must be available.
 
-## Reproducibility
+## Sources
 
-The random seed lives in `src/x5uplift/config.py`. Dependency versions are frozen into `requirements.lock` with `make freeze` after the first successful install.
-
-## Repository layout
-
-```
-src/x5uplift/   shared code (config, helpers)
-scripts/        data download, conversion and audit
-notebooks/      analysis notebooks (added step by step)
-reports/        aggregated audit outputs
-figures/        exported figures
-tests/          unit tests for helper functions
-data/           local only, not tracked
-```
+* X5 RetailHero uplift modelling dataset: [ods.ai competition page](https://ods.ai/competitions/x5-retailhero-uplift-modeling/data), files via [scikit-uplift](https://www.uplift-modeling.com/en/latest/api/datasets/fetch_x5.html). Terms of use are not stated there; raw data is therefore not redistributed.
+* Criteo uplift dataset v2.1: Diemert et al., *A Large Scale Benchmark for Individual Treatment Effect Prediction and Uplift Modeling*, [arXiv:2111.10106](https://arxiv.org/abs/2111.10106); files from the [Hugging Face mirror](https://huggingface.co/datasets/criteo/criteo-uplift), license CC BY-NC-SA 4.0.
+* X learner: Künzel et al., *Metalearners for estimating heterogeneous treatment effects using machine learning*, PNAS (2019).
